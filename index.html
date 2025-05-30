@@ -6,104 +6,143 @@
     <title>Weather App</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #74ebd5, #acb6e5);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+            min-height: 100vh;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            transition: background 0.5s;
         }
-
         .container {
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 90%;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            border-radius: 18px;
+            padding: 32px 28px 28px 28px;
             max-width: 400px;
+            width: 95vw;
+            text-align: center;
+            backdrop-filter: blur(6px);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            transition: box-shadow 0.3s;
         }
-
+        .container:hover {
+            box-shadow: 0 12px 40px 0 rgba(31,38,135,0.22);
+        }
         h1 {
-            color: #333;
-            margin-bottom: 20px;
+            color: #007bff;
+            font-size: 2.2rem;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
         }
-
         .search-box {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
-
         #city-input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px 14px;
+            font-size: 1rem;
+            border: 1.5px solid #b0c4de;
+            border-radius: 7px;
             flex: 1;
+            outline: none;
+            transition: border 0.2s;
         }
-
+        #city-input:focus {
+            border: 1.5px solid #007bff;
+            background: #f4faff;
+        }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
+            padding: 12px 18px;
+            font-size: 1rem;
+            background: linear-gradient(90deg, #007bff 60%, #74ebd5 100%);
+            color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 7px;
             cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            transition: background 0.2s, box-shadow 0.2s;
         }
-
-        button:hover {
-            background-color: #0056b3;
+        button:hover, button:focus {
+            background: linear-gradient(90deg, #0056b3 60%, #74ebd5 100%);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
         }
-
+        #unit-toggle {
+            min-width: 48px;
+        }
         .weather-info {
-            font-size: 18px;
-            color: #333;
+            font-size: 1.1rem;
+            color: #222;
+            margin-top: 10px;
+            padding: 18px 0 0 0;
+            border-top: 1px solid #e0eafc;
+            min-height: 120px;
+            transition: min-height 0.2s;
         }
-
-        .weather-info img {
-            width: 50px;
-            vertical-align: middle;
+        .weather-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 8px;
         }
-
-        .error {
-            color: red;
+        .weather-main img {
+            width: 64px;
+            height: 64px;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
         }
-
-        #recent-searches {
+        .weather-details {
             text-align: left;
-            margin-bottom: 15px;
+            margin: 0 auto;
+            max-width: 220px;
         }
-
+        .weather-details p {
+            margin: 4px 0;
+            font-size: 1rem;
+        }
+        .error {
+            color: #d90429;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        #recent-searches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 12px;
+            justify-content: flex-start;
+        }
+        .chip {
+            background: #e0eafc;
+            color: #007bff;
+            border-radius: 16px;
+            padding: 6px 14px;
+            font-size: 0.98rem;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .chip:hover, .chip:focus {
+            background: #007bff;
+            color: #fff;
+        }
         #spinner {
             display: none;
             margin-bottom: 10px;
             justify-content: center;
             align-items: center;
         }
-
         .spinner-rotate {
             animation: spinner-rotate 1s linear infinite;
             transform-origin: 50% 50%;
         }
-
         @keyframes spinner-rotate {
             100% { transform: rotate(360deg); }
         }
-
-        @media (max-width: 600px) {
-            .container {
-                width: 95%;
-                padding: 15px;
-            }
-
-            #city-input, button {
-                font-size: 14px;
-            }
-        }
-
         /* Fancy fullscreen preloader */
         #preloader {
             position: fixed;
@@ -144,6 +183,22 @@
         }
         body.preloader-active .container {
             visibility: hidden;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 99vw;
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.3rem;
+            }
+            .weather-main img {
+                width: 48px;
+                height: 48px;
+            }
+            .weather-details {
+                max-width: 140px;
+            }
         }
     </style>
 </head>
@@ -227,7 +282,7 @@
                 container.innerHTML = '';
                 return;
             }
-            container.innerHTML = '<strong>Recent:</strong> ' + searches.map(city => `<a href="#" onclick="searchRecent('${city}')" style="margin:0 5px; color:#007bff; text-decoration:underline;">${city}</a>`).join('');
+            container.innerHTML = searches.map(city => `<button class="chip" onclick="searchRecent('${city}')">${city}</button>`).join('');
         }
 
         function searchRecent(city) {
@@ -264,15 +319,21 @@
                 const feelsLike = data.main.feels_like;
                 const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
                 const weatherMain = data.weather[0].main;
-                // Display weather data
+                // Display weather data in a modern layout
                 weatherResult.innerHTML = `
-                    <h2>${cityName}</h2>
-                    <p>Temperature: ${temperature}${unitSymbol}</p>
-                    <p>Feels like: ${feelsLike}${unitSymbol}</p>
-                    <p>Weather: ${description}</p>
-                    <p>Humidity: ${humidity}%</p>
-                    <p>Wind speed: ${windSpeed} ${unit === 'metric' ? 'm/s' : 'mph'}</p>
-                    <img src="${icon}" alt="Weather icon">
+                    <div class="weather-main">
+                        <img src="${icon}" alt="Weather icon">
+                        <div>
+                            <h2 style="margin:0 0 4px 0; font-size:1.3rem; color:#007bff;">${cityName}</h2>
+                            <div style="font-size:1.7rem; font-weight:600; color:#222;">${temperature}${unitSymbol}</div>
+                            <div style="font-size:1rem; color:#555; text-transform:capitalize;">${description}</div>
+                        </div>
+                    </div>
+                    <div class="weather-details">
+                        <p>Feels like: <strong>${feelsLike}${unitSymbol}</strong></p>
+                        <p>Humidity: <strong>${humidity}%</strong></p>
+                        <p>Wind speed: <strong>${windSpeed} ${unit === 'metric' ? 'm/s' : 'mph'}</strong></p>
+                    </div>
                 `;
                 setDynamicBackground(weatherMain);
                 saveRecentSearch(cityName);
